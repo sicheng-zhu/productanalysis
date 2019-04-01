@@ -1,0 +1,32 @@
+# Simple API
+## Environment
+- Java 8
+- Tomcat
+- Spring Boot
+- Maven
+- PostMan
+- Heroku
+## Links
+- [Heroku](https://productanalysis.herokuapp.com/)
+## Autocomplete
+### How to test
+Paste this link in Postman: https://productanalysis.herokuapp.com/api/products/autocomplete, and see screenshot in screenshot folder for Postman configuration.
+### Restrictions
+- In JSON request file, "type" can only be "title", "brand", or "category".
+- When doing search in sample_product_data.tsv, if any field's prefix value matches the prefix value in JSON request, then this is a suggestion.
+- Only return first 10 suggestions. (Open to discussion.)
+### Solution Description
+1. The entry point is getSuggestionList method in AutocompleteController.java. Do validation check, and then call getSuggestion method to get suggestions.
+2. Use BufferedReader, BufferedInputStream, InputStream, and StringTokenizer to read and parse .tsv file line by line.
+3. Store the expected field value in productDetailString variable.
+4. For each line in .tsv, if there are less than 6 fields, this means field(s) missing. Then skip this line.
+5. If the prefix string from request JSON file matches the prefix of productDetailString variable, and productDetailString hasn't been seen previously (use HashSet here), add this productDetailString to an arraylist.
+6. Only collect the first 10 suggestions.
+7. Return the arraylist.
+###  Memory And Runtime Analysis
+Prefix string size in JSON file: average (preSize) characters.
+Each line length in .tsv file: average (lineSize) characters.
+Target field value length: average (tarSize) characters.
+
+Time: O(50000 * (lineSize + preSize))
+Space: O(2 * 10 * tarSize)
