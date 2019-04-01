@@ -2,16 +2,13 @@ package com.sichengzhu.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,10 +27,20 @@ public class KeywordsFrequencyController {
 	@ResponseBody	
 	public Map<String, Integer> getkeywordFrequencyList(@RequestBody Map<String, 
 			                                            String[]> keyWordMap) {
-		Map<String, Integer> frequencyList = new HashMap<>();		
+		Map<String, Integer> frequencyList = new HashMap<>();
+		
+		if (keyWordMap == null || !keyWordMap.containsKey("keywords")) {
+			frequencyList.put("Please correct the request json file.", 0);
+			return frequencyList;
+		}		
 		
 		// Get json object via POST, and assign keywords to keyWordList.
 		String[] keyWordList = keyWordMap.get("keywords");	
+		
+		if (keyWordList == null || keyWordList.length == 0) {
+			frequencyList.put("Please correct the request json file.", 0);
+			return frequencyList;
+		}
 		
 		frequencyList = getFrequency(keyWordList);
 		
@@ -49,7 +56,7 @@ public class KeywordsFrequencyController {
 	 * @param  keyWordList a list of keyword to lookup frequency.
 	 * @return a hashmap store keywords and frequencies.
 	 */
-	public HashMap<String, Integer> getFrequency(String[] keyWordList) {	
+	private HashMap<String, Integer> getFrequency(String[] keyWordList) {	
 		Map<String, Integer> fileWordFrequencyMap = new HashMap<>();
 		HashMap<String, Integer> responseFrequencyMap = new HashMap<>();
 		
@@ -59,8 +66,6 @@ public class KeywordsFrequencyController {
 	    String[] productDetailArray = null;	
 	    
 		try {    			
-//		    FileInputStream fis = new FileInputStream(
-//		    		                  ResourceUtils.getFile("classpath:sample_product_data.tsv"));
 		    InputStream fis = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample_product_data.tsv");
 		    BufferedInputStream bis = new BufferedInputStream(fis); 
 		    BufferedReader br = new BufferedReader(new InputStreamReader(bis));
@@ -110,8 +115,7 @@ public class KeywordsFrequencyController {
 		    		responseFrequencyMap.put(word, 0);
 		    	} else {
 		    		responseFrequencyMap.put(word, fileWordFrequencyMap.get(word));
-		    	}
-		    	
+		    	}		    	
 		    }
 		    
 		    return responseFrequencyMap;
