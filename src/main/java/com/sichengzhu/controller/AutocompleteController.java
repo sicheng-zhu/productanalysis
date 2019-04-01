@@ -22,7 +22,7 @@ public class AutocompleteController {
     @RequestMapping(method = RequestMethod.POST, value="/api/products/autocomplete")
 	
 	@ResponseBody	
-	public ArrayList<String> getkeywordFrequencyList(@RequestBody Map<String, 
+	public ArrayList<String> getSuggestionList(@RequestBody Map<String, 
 			                                            String> autoCompleteMap) {
     	ArrayList<String> suggesionList = new ArrayList<>();		
 		
@@ -59,12 +59,12 @@ public class AutocompleteController {
 	    String lowerCasedPrefixString = null;
 	    
 		try {    			
-		    InputStream fis = Thread.currentThread().getContextClassLoader()
+		    InputStream is = Thread.currentThread().getContextClassLoader()
 		    		                .getResourceAsStream("sample_product_data.tsv");
 		    
-		    BufferedInputStream bis = new BufferedInputStream(fis); 
+		    BufferedInputStream bis = new BufferedInputStream(is); 
 		    BufferedReader br = new BufferedReader(new InputStreamReader(bis));
-		    
+
 		    String productRecordString = br.readLine(); // Read first line.		    	    
 		    
 		    while (productRecordString != null) {
@@ -108,7 +108,7 @@ public class AutocompleteController {
 	        }		    
 		    
 		    bis.close();    
-		    fis.close();		    		    
+		    is.close();		    		    
 		    		    
 		    return suggestionList;
 		} catch (Exception e) {
