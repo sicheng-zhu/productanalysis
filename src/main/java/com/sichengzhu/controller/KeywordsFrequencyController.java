@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -57,10 +58,13 @@ public class KeywordsFrequencyController {
 	    String[] productDetailArray = null;	
 	    
 		try {    			
-		    FileInputStream fis = new FileInputStream(
-		    		                  ResourceUtils.getFile("classpath:sample_product_data.tsv"));
-		    BufferedInputStream bis = new BufferedInputStream(fis); 
-		    BufferedReader br = new BufferedReader(new InputStreamReader(bis));
+//		    FileInputStream fis = new FileInputStream(
+//		    		                  ResourceUtils.getFile("classpath:sample_product_data.tsv"));
+//		    BufferedInputStream bis = new BufferedInputStream(fis); 
+//		    BufferedReader br = new BufferedReader(new InputStreamReader(bis));
+			
+			URL oracle = new URL("http://uraemia-continuity.000webhostapp.com/sample_product_data.tsv");
+		    BufferedReader br = new BufferedReader(new InputStreamReader(oracle.openStream()));
 		    
 		    String productRecordString = br.readLine(); // Read first line.		    	    
 		    
@@ -99,8 +103,8 @@ public class KeywordsFrequencyController {
 	            productRecordString = br.readLine(); // Read next line of data.
 	        }		    
 		    
-		    bis.close();    
-		    fis.close();
+//		    bis.close();    
+//		    fis.close();
 		    
 		    for (String word : keyWordList) {
 		    	if (fileWordFrequencyMap.get(word) == null) {
