@@ -30,11 +30,11 @@ public class KeywordsFrequencyController {
 		Map<String, Integer> frequencyList = new HashMap<>();
 		
 		if (keyWordMap == null || !keyWordMap.containsKey("keywords")) {
-			frequencyList.put("Please correct the request json file.", 0);
+			frequencyList.put("Please correct the request JSON file.", 0);
 			return frequencyList;
 		}		
 		
-		// Get json object via POST, and assign keywords to keyWordList.
+		// Get JSON object via POST, and assign keywords to keyWordList.
 		String[] keyWordList = keyWordMap.get("keywords");	
 		
 		if (keyWordList == null || keyWordList.length == 0) {
@@ -66,7 +66,9 @@ public class KeywordsFrequencyController {
 	    String[] productDetailArray = null;	
 	    
 		try {    			
-		    InputStream fis = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample_product_data.tsv");
+		    InputStream fis = Thread.currentThread().getContextClassLoader()
+		    		                .getResourceAsStream("sample_product_data.tsv");
+		    
 		    BufferedInputStream bis = new BufferedInputStream(fis); 
 		    BufferedReader br = new BufferedReader(new InputStreamReader(bis));
 		    
@@ -98,7 +100,8 @@ public class KeywordsFrequencyController {
 	                if (!fileWordFrequencyMap.containsKey(lowerCasedString)) {
 	                	fileWordFrequencyMap.put(lowerCasedString, 1);
 	                } else {
-	                	fileWordFrequencyMap.put(lowerCasedString, fileWordFrequencyMap.get(lowerCasedString) + 1);
+	                	fileWordFrequencyMap
+	                	.put(lowerCasedString, fileWordFrequencyMap.get(lowerCasedString) + 1);
 	                }
 	            }	            	           
 	            
